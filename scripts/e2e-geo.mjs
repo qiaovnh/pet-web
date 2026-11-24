@@ -21,13 +21,13 @@ page.on('pageerror', (e) => errors.push(e.message.slice(0, 120)));
 
 // ---------- GEO surfaces ----------
 const llms = await (await fetch(`${BASE}/llms.txt`)).text();
-check('llms.txt 生成', llms.includes('# INAUE') && llms.includes('关键事实') && llms.includes('Earl Grey Supreme'));
+check('llms.txt 生成', llms.includes('# INAUE') && llms.includes('关键事实') && llms.includes('DOG 6 Tracker'));
 
 const llmsFull = await (await fetch(`${BASE}/llms-full.txt`)).text();
-check('llms-full.txt 生成', llmsFull.includes('商品目录') && llmsFull.includes('/products/earl-grey-supreme'));
+check('llms-full.txt 生成', llmsFull.includes('商品目录') && llmsFull.includes('/products/dog-6-tracker'));
 
 const sitemap = await (await fetch(`${BASE}/sitemap.xml`)).text();
-check('sitemap 含商品与集合', sitemap.includes('/products/earl-grey-supreme') && sitemap.includes('/collections/all'));
+check('sitemap 含商品与集合', sitemap.includes('/products/dog-6-tracker') && sitemap.includes('/collections/all'));
 
 const robots = await (await fetch(`${BASE}/robots.txt`)).text();
 check('robots 允许 AI 爬虫', /GPTBot/.test(robots) && /Sitemap:/.test(robots));
@@ -37,7 +37,7 @@ const homeHtml = await page.content();
 check('首页输出 FAQPage 结构化数据', homeHtml.includes('FAQPage') && homeHtml.includes('application/ld+json'));
 check('首页输出 Organization', homeHtml.includes('Organization'));
 
-await page.goto(`${BASE}/products/earl-grey-supreme`, { waitUntil: 'networkidle2' });
+await page.goto(`${BASE}/products/dog-6-tracker`, { waitUntil: 'networkidle2' });
 const pdpHtml = await page.content();
 check('商品页输出 Product 结构化数据', pdpHtml.includes('"@type":"Product"') && pdpHtml.includes('priceCurrency'));
 
@@ -110,7 +110,7 @@ await page.evaluate(async (B) => {
   const current = await (await fetch(`${B}/api/admin/content`)).json();
   const banners = current.content.banners.map((b) =>
     b.placement === 'home-hero'
-      ? { ...b, title: 'Tea Is the Moment', ctaLabel: 'Shop Holiday' }
+      ? { ...b, title: 'Never Lose Them Again', ctaLabel: 'Shop Trackers' }
       : b,
   );
   const nav = current.content.nav.filter((g) => g.id !== 'nav-e2e');

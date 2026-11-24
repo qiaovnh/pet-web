@@ -61,8 +61,8 @@ export default async function HomePage() {
             {hero?.subtitle || t('hero.sub')}
           </p>
           <div className="mt-9 flex flex-wrap justify-center gap-3">
-            <Link href="/collections/dogs" className="btn bg-white text-tan hover:bg-cream">
-              <span>{t('nav.looseLeaf')}</span>
+            <Link href={hero?.ctaHref || '/collections/dogs'} className="btn bg-white text-tan hover:bg-cream">
+              <span>{hero?.ctaLabel || t('nav.looseLeaf')}</span>
             </Link>
             <Link href="/collections/cats" className="btn bg-white text-tan hover:bg-cream">
               <span>{t('nav.matchaPowders')}</span>

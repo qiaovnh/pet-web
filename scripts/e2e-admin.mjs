@@ -31,7 +31,7 @@ const setLocale = async (locale) =>
 // ---------- i18n ----------
 await page.goto(`${BASE}/`, { waitUntil: 'networkidle2' });
 const enHtml = await page.content();
-check('english default', enHtml.includes('Tea Is the Moment') && enHtml.includes('lang="en"'));
+check('english default', enHtml.includes('Never Lose Them Again') && enHtml.includes('lang="en"'));
 
 await setLocale('ja');
 await page.goto(`${BASE}/`, { waitUntil: 'networkidle2' });
@@ -97,18 +97,18 @@ const create = await page.evaluate(async (B) => {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      title: 'Test Oolong 99',
-      subtitle: 'Organic Oolong Tea',
-      notes: 'Creamy | Floral',
-      categories: ['oolong'],
-      sizes: [{ label: '3 oz loose leaf', price: 21.5 }],
+      title: 'Test Tracker 99',
+      subtitle: 'GPS Tracker for Dogs',
+      notes: 'Lightweight | waterproof',
+      categories: ['dogs'],
+      sizes: [{ label: 'Device only', price: 21.5 }],
       blurb: 'A temp product created by the e2e suite.',
-      origin: 'Anxi',
-      caffeine: 'Medium',
-      ingredients: 'Organic oolong tea',
-      preparation: '195F, 45s',
+      origin: 'Shenzhen',
+      caffeine: 'None',
+      ingredients: 'n/a',
+      preparation: 'n/a',
       story: 'Temporary.',
-      image: '/img/p-iron-goddess.jpg',
+      image: '/img/hero-dog.jpg',
     }),
   });
   return { status: r.status, body: await r.json() };
@@ -118,13 +118,13 @@ check('admin can create product', create.status === 200 && create.body.ok === tr
 const handle = create.body.product?.handle ?? '';
 await page.goto(`${BASE}/products/${handle}`, { waitUntil: 'networkidle2' });
 const pdpText = await page.evaluate(() => document.body.innerText);
-check('new product visible on storefront', pdpText.includes('Test Oolong 99'), handle);
+check('new product visible on storefront', pdpText.includes('Test Tracker 99'), handle);
 
 const update = await page.evaluate(async (B, h) => {
   const r = await fetch(`${B}/api/admin/products/${h}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ title: 'Test Oolong 99', subtitle: 'Organic Oolong Tea', notes: 'Creamy | Floral', categories: ['oolong'], sizes: [{ label: '3 oz loose leaf', price: 33 }], blurb: 'Updated.', origin: 'Anxi', caffeine: 'Medium', ingredients: 'Tea', preparation: '195F', story: 'Temp', image: '/img/p-iron-goddess.jpg' }),
+    body: JSON.stringify({ title: 'Test Tracker 99', subtitle: 'GPS Tracker for Dogs', notes: 'Lightweight | waterproof', categories: ['dogs'], sizes: [{ label: 'Device only', price: 33 }], blurb: 'Updated.', origin: 'Shenzhen', caffeine: 'None', ingredients: 'n/a', preparation: 'n/a', story: 'Temp', image: '/img/hero-dog.jpg' }),
   });
   return r.status;
 }, BASE, handle);
@@ -134,10 +134,10 @@ check('edit updates price on storefront', update === 200 && updatedText.includes
 
 // ---------- gallery reorder ----------
 const reorder = await page.evaluate(async (B) => {
-  const one = await (await fetch(`${B}/api/admin/products/earl-grey-supreme`)).json();
+  const one = await (await fetch(`${B}/api/admin/products/dog-6-tracker`)).json();
   const p = one.product;
   const reversed = [...(p.images ?? [p.image])].reverse();
-  const res = await fetch(`${B}/api/admin/products/earl-grey-supreme`, {
+  const res = await fetch(`${B}/api/admin/products/dog-6-tracker`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ ...p, images: reversed, image: reversed[0] }),
@@ -146,15 +146,15 @@ const reorder = await page.evaluate(async (B) => {
 }, BASE);
 check('保存图集顺序', reorder.status === 200, reorder.first);
 
-await page.goto(`${BASE}/products/earl-grey-supreme`, { waitUntil: 'networkidle2' });
+await page.goto(`${BASE}/products/dog-6-tracker`, { waitUntil: 'networkidle2' });
 const cover = await page.$eval('[data-gallery-main]', (el) => el.getAttribute('src'));
 check('排序后封面随之变化', cover === reorder.first, `${cover} vs ${reorder.first}`);
 
 await page.evaluate(async (B) => {
-  const one = await (await fetch(`${B}/api/admin/products/earl-grey-supreme`)).json();
+  const one = await (await fetch(`${B}/api/admin/products/dog-6-tracker`)).json();
   const p = one.product;
   const back = [...p.images].reverse();
-  await fetch(`${B}/api/admin/products/earl-grey-supreme`, {
+  await fetch(`${B}/api/admin/products/dog-6-tracker`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ ...p, images: back, image: back[0] }),
