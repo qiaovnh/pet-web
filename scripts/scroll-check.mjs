@@ -1,0 +1,14 @@
+import puppeteer from 'puppeteer-core';
+const b = await puppeteer.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true,args:['--no-sandbox','--disable-gpu','--disable-dev-shm-usage',`--user-data-dir=/tmp/sc-${Date.now()}`]});
+const p = await b.newPage();
+await p.setViewport({width:1440,height:900});
+await p.goto('http://localhost:3220/',{waitUntil:'networkidle2'});
+const topBg = await p.$eval('header', el => getComputedStyle(el).backgroundColor);
+await p.evaluate(()=>window.scrollTo(0,900));
+await new Promise(r=>setTimeout(r,600));
+const scrolledBg = await p.$eval('header', el => getComputedStyle(el).backgroundColor);
+const linkColor = await p.$eval('header nav a', el => getComputedStyle(el).color);
+console.log('top header bg:', topBg);
+console.log('scrolled header bg:', scrolledBg);
+console.log('scrolled link color:', linkColor);
+await b.close();

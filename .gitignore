@@ -1,0 +1,54 @@
+# 依赖
+node_modules/
+.npm-cache/
+.pnpm-store/
+
+# 构建产物
+.next/
+out/
+dist/
+build/
+*.tsbuildinfo
+
+# 运行时数据（商品/订单/设置/上传的图片）—— 不进版本库
+# 注意：Vercel 上数据走 Blob，本地数据用 scripts/export.sh 导出快照
+.data/
+
+# 环境变量（含密钥，绝不能提交）
+.env
+.env.local
+.env.*.local
+.env.production
+!.env.example
+
+# 本地工具状态
+.dreamina-state/
+
+# 截图与预览产物
+preview/
+
+# 日志
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# 编辑器与系统
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+
+# Vercel
+.vercel
+
+# 自建服务器部署包（由 scripts/deploy-selfhosted.sh 生成，19MB，Vercel 不需要）
+inaue-deploy-*.tar.gz
+
+# 兜底：任何 .env 开头且带后缀的本地环境文件都排除
+# 注意顺序——.env.example 是模板，需要入库，所以用 ! 显式放行
+.env*
+!.env.example

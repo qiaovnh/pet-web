@@ -1,0 +1,14 @@
+import puppeteer from 'puppeteer-core';
+const BASE='http://localhost:3210';
+const b = await puppeteer.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true,args:['--no-sandbox','--disable-gpu','--disable-dev-shm-usage',`--user-data-dir=/tmp/su-${Date.now()}`]});
+const p = await b.newPage();
+await p.setViewport({width:1440,height:1100});
+await p.goto(`${BASE}/admin/login`,{waitUntil:'networkidle2'});
+await p.type('#password','inaue-admin');
+await p.click('button[type="submit"]');
+await p.waitForFunction(()=>location.pathname==='/admin',{timeout:15000}).catch(()=>{});
+await p.goto(`${BASE}/admin/products/earl-grey-supreme`,{waitUntil:'networkidle2'});
+await new Promise(r=>setTimeout(r,700));
+await p.screenshot({path:'/tmp/admin-upload.png'});
+console.log('ok');
+await b.close();
