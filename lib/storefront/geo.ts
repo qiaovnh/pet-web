@@ -56,7 +56,7 @@ export const DEFAULT_GEO: Geo = {
       answer: 'IPX7 级防水，淋雨、踩泥、短时间落水都没问题，但不建议长时间浸泡。',
     },
   ],
-  canonicalBase: 'https://inaue.com',
+  canonicalBase: 'https://www.pemaolu.com',
   allowAiCrawlers: true,
   updatedAt: Date.now(),
 };
